@@ -1,0 +1,19 @@
+{
+  "name": "ip-updater",
+  "version": "1.0.0",
+  "description": "package to poll for ip address updates and then update readmes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/albertpatterson/IP-Updater.git"
+  },
+  "author": "Albert Patterson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/albertpatterson/IP-Updater/issues"
+  },
+  "homepage": "https://github.com/albertpatterson/IP-Updater#readme"
+}
