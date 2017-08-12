@@ -21,11 +21,10 @@ function compareAndUpdateFile(){
 
     // fetch the current IP
     let fetchIPProm = new Promise((res, rej)=>{
-        // let ipFetch = cp.execFile("dig",["+short", "myip.opendns.com", "@resolver1.opendns.com"])
-        // ipFetch.stdout.on("data", res);
-        // ipFetch.stderr.on("data", rej);
-        // ipFetch.on("close", c=>console.log('dig done, code: ', c))
-        res("173.48.210.203");
+        let ipFetch = cp.execFile("dig",["+short", "myip.opendns.com", "@resolver1.opendns.com"])
+        ipFetch.stdout.on("data", res);
+        ipFetch.stderr.on("data", rej);
+        ipFetch.on("close", c=>console.log('dig done, code: ', c))
     });
     
     // get the text from the file containing the IP
