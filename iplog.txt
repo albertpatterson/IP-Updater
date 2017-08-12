@@ -1,6 +1,7 @@
 details
 
-access site at http://0.11.222.333:8080/testPage
+access site at http://173.48.210.203
+:8080/testPage
 
 more details
 
