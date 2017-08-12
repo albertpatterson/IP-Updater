@@ -1,6 +1,6 @@
 details
 
-access site at http://3.22.111.000:8080/testPage
+access site at http://173.48.210.203:8080/testPage
 
 more details
 
