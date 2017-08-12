@@ -1,7 +1,9 @@
 const cp = require('child_process');
 const fs = require("fs");
 
+// regular eexpression to match an ip address that is part of a url in a file
 const ipRegExp = /\/\/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/;
+// file containing example url
 const iplog = "./iplog.txt";
 
 // compare the ip in the file to the current one and update the file if ips are different
