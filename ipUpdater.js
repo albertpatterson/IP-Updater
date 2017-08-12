@@ -22,7 +22,7 @@ function compareAndUpdateFile(){
     // fetch the current IP
     let fetchIPProm = new Promise((res, rej)=>{
         let ipFetch = cp.execFile("dig",["+short", "myip.opendns.com", "@resolver1.opendns.com"])
-        ipFetch.stdout.on("data", res);
+        ipFetch.stdout.on("data", ip=>res(ip.trim()));
         ipFetch.stderr.on("data", rej);
         ipFetch.on("close", c=>console.log('dig done, code: ', c))
     });
@@ -70,7 +70,7 @@ function compareAndUpdateFile(){
 function pushUpdateToGitHub(){
     
     return new Promise((res, rej)=>{
-        // add all changes to github
+        // add all changes to staging area
 
         let add = cp.execFile("git",["add", "."])
         add.stdout.on("data", d=>console.log('add data: ', d))
@@ -81,7 +81,7 @@ function pushUpdateToGitHub(){
         })
     })
     .then(()=>{
-        // commit all changes to github
+        // commit changes
 
         console.log("git commit");
         return new Promise((res, rej)=>{
