@@ -1,25 +1,39 @@
+module.exports = {
+    /**
+     * update the IP address shown in a file on github, such as a readme
+     * 
+     * @param {string} filePath 
+     * @returns Promise<>
+     */
+    updateIpOnGitHub: function(filePath){
+        
+        // compare the ip in the file to the current one and update the file if ips are different
+        return compareAndUpdateFile(filePath)
+        // push the updated file to github if it was changed
+        .then(updated => {
+            if(updated){
+                pushUpdateToGitHub();
+            }else{
+                console.log('ip address not updated')
+            }
+        })
+        .then(()=>console.log("operation complete"))
+        .catch(console.log)
+    }
+}
+
 const cp = require('child_process');
 const fs = require("fs");
 
 // regular eexpression to match an ip address that is part of a url in a file
 const ipRegExp = /\/\/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/;
-// file containing example url
-const iplog = "./iplog.txt";
-
-// compare the ip in the file to the current one and update the file if ips are different
-compareAndUpdateFile()
-// push the updated file to github if it was changed
-.then(updated => updated && pushUpdateToGitHub())
-.then(()=>console.log("operation complete"))
-.catch(console.log)
-
 
 /**
  * compare the current IP to the IP in the file and update the file if needed
  * 
  * @returns {Promise<Boolean>} promise resolved with a boolean indicating if the file was updated
  */
-function compareAndUpdateFile(){
+function compareAndUpdateFile(filePath){
 
     // fetch the current IP
     let fetchIPProm = new Promise((res, rej)=>{
@@ -31,7 +45,7 @@ function compareAndUpdateFile(){
     
     // get the text from the file containing the IP
     let readFileProm = new Promise((res, rej)=>{
-        fs.readFile(iplog, 'utf8', (err, conts)=>{
+        fs.readFile(filePath, 'utf8', (err, conts)=>{
             err ? rej(err) : res(conts);
         });
     });
@@ -41,18 +55,22 @@ function compareAndUpdateFile(){
         // compare the current IP to that in the file and update the file contents if needed
 
         let [ip, oldConts] = ipAndOldConts;
+        console.log('current ip: '+ ip);
 
         let ipMatch = oldConts.match(ipRegExp);
+        
         if(!ipMatch){
             throw new Error("No IP found in file");
         }
+
         let ipInFile = ipMatch[0].slice(2);
-        
+        console.log('ip found in file: '+ ipInFile);
+
         return new Promise((res, rej)=>{
             if(ipInFile !== ip){
                 // update the file contents if the ips do not match
                 let newConts = oldConts.replace(ipRegExp, '//'+ip);
-                fs.writeFile(iplog, newConts, (err, data)=>{
+                fs.writeFile(filePath, newConts, (err, data)=>{
                     err ? rej(err) : res(true);
                 })
             }else{
@@ -110,4 +128,4 @@ function pushUpdateToGitHub(){
             })
         })
     });
-}
+} 
